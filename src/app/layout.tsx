@@ -36,13 +36,13 @@ export default function RootLayout({
         <StoreProvider>
           <ThemeProvider>
             <AuthProvider>
-              <MainProvider>
+              
                 
                 <div>
-                  <Navbar/>
+                  {/* <Navbar/> */}
                   {children}
                 </div>
-              </MainProvider>
+              
             </AuthProvider>
           </ThemeProvider>
         </StoreProvider>

@@ -1,6 +1,6 @@
 "use client"
 import { useAuth } from "context/auth";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 
 const Login = ()=>{
