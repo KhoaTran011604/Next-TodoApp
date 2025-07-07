@@ -14,10 +14,15 @@ const api = axios.create({
 // 🛡️ Interceptor để tự thêm Authorization nếu có token
 api.interceptors.request.use((config) => {
     const token = getItemLocalStore('^token') as string | null
-    const user = getDataFromToken(token)
-    if (user.accessToken) {
-        config.headers.Authorization = `Bearer ${user.accessToken}`
+    if (token) {
+        const user = getDataFromToken(token)
+        if (user.accessToken) {
+            config.headers.Authorization = `Bearer ${user.accessToken}`
+        }
     }
+    console.log("token", token);
+
+
     return config
 })
 
