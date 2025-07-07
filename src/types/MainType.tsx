@@ -13,3 +13,10 @@ export type Filter = {
   page: number;
   pageSize: number;
 };
+
+export type UserTokenPayload = {
+  accessToken: string
+  userId: string
+  exp?: number
+  iat?: number
+}
