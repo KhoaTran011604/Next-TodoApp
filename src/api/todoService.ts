@@ -7,6 +7,11 @@ export async function GetAllTodo(request) {
     return await Proxy("post", "/todo/get-all", request);
 }
 
+export async function GetCompletedTodo(request) {
+
+    return await Proxy("post", "/todo/get-completed", request);
+}
+
 export async function GetAllTodoFK(request) {
 
     return await Proxy("post", "/todo/get-all-fk", request);

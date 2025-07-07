@@ -1,5 +1,7 @@
 "use client"
 
+import ItemTask from "@/components/ItemTask";
+import LottieComponent from "@/components/lotties/lottie";
 import { CompletedTodo, CreateTodo, DeleteTodo, GetAllTodo, UpdateTodo } from "api/todoService";
 import {  useEffect, useRef, useState } from "react";
 import { Filter, Task } from "types/MainType";
@@ -19,13 +21,24 @@ const AllTasks = ()=>{
     const [tasks, setTasks] = useState<Task[]>([])
     const [task, setTask] = useState<Task>(taskInit)
     const [filterPage, setFilterpage] = useState<Filter>(filterInit)
+    const [isLoading,setIsLoading] =useState<Boolean>(false)
 
-    const LoadData = async()=>{
-        const response = await GetAllTodo(filterPage)
-        console.log(response);       
-        if(response.success){
-            setTasks(response.data)
+    const LoadData = ()=>{
+        if(isLoading){
+            return
         }
+        setIsLoading(true)
+        GetAllTodo(filterPage)
+        .then(response =>{
+            if(response.success){
+                setTasks(response.data)
+            }
+        }).catch(err => console.log("err => ",err))
+        .finally(()=>{
+            setIsLoading(false)
+        })
+              
+        
         
     }
 
@@ -71,6 +84,7 @@ const AllTasks = ()=>{
             <h2 className="text-center py-8 text-3xl font-bold animate-up-down">All Tasks</h2>
             <div className="w-full flex flex-col justify-center items-center p-16 gap-8">
                 <div className="flex items-center gap-4">
+                    
                     <input className="border border-gray-400 px-4 py-2 rounded-md flex-1 dark:border-gray-700" value={task.title} onChange={(e)=>setTask({
                         ...task,
                         title: e.target.value})}
@@ -90,22 +104,19 @@ const AllTasks = ()=>{
                     {task._id.length > 0 && <button onClick={()=>setTask(taskInit)}>Close</button>}
                 </div>
                 {
-                    tasks.length > 0 && tasks.map((task,index)=>(<div key={index} className="w-96 border border-gray-300 py-4 px-16 rounded-lg dark:border-gray-700"
-                    onDoubleClick={()=>setTask(task)}
-                    >
-                        <h2 className={`text-2xl font-medium text-blue-500 ${task.completed ? "line-through":""} `}>{task.title}</h2>
-                        <div className="flex justify-between">
-                            <h2>{"_"}</h2>
-                            <div className="flex gap-4">
-                                <button onClick={()=>{
-                                    handleCompletedTask(task._id)
-                                }}>complete</button>
-                                <button onClick={()=>{
-                                    handleDeleteTask(task._id)
-                                }}>delete</button>
-                            </div>
-                        </div>
-                    </div>))
+                    isLoading ? (<LottieComponent/>):(
+                        <>
+
+                            {
+                                tasks.length > 0 && tasks.map((task,index)=>(<div key={index} className="w-96 border border-gray-300 p-4 rounded-lg dark:border-gray-700"
+                                onDoubleClick={()=>setTask(task)}
+                                >
+                                    <ItemTask isInPageGetAll={true} task={task} handleCompletedTask={handleCompletedTask} handleDeleteTask={handleDeleteTask}/>
+                                </div>))
+                            }
+                        </>
+
+                    )
                 }
             </div>
         </div>
