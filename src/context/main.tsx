@@ -49,7 +49,7 @@ export const MainProvider = ({ children }: { children: ReactNode }) => {
   }
   const handleUpdateTask : (data : Task) => void = (data : Task)=>{
     const updatedList = [...tasks].map(item =>
-      item.id === data.id ? { ...item, ...data } : item
+      item._id === data._id ? { ...item, ...data } : item
     );
     
     setTasks(updatedList)
