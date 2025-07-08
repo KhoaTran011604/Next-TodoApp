@@ -140,7 +140,7 @@ export default function TodoTable(){
                 <button
                     onClick={() => table.previousPage()}
                     disabled={!table.getCanPreviousPage()}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-gray-200 dark:bg-transparent rounded disabled:opacity-50"
                 >
                     Previous
                 </button>
@@ -152,7 +152,7 @@ export default function TodoTable(){
                 <button
                     onClick={() => table.nextPage()}
                     disabled={!table.getCanNextPage()}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-gray-200 dark:bg-transparent rounded disabled:opacity-50"
                 >
                     Next
                 </button>
