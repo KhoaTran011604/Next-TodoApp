@@ -1,6 +1,6 @@
 {
   "/table-tasks/page": "app/table-tasks/page.js",
-  "/completed-tasks/page": "app/completed-tasks/page.js",
   "/tanstack-table-tasks/page": "app/tanstack-table-tasks/page.js",
-  "/login-2/page": "app/login-2/page.js"
+  "/login-2/page": "app/login-2/page.js",
+  "/completed-tasks/page": "app/completed-tasks/page.js"
 }
