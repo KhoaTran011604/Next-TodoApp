@@ -26,9 +26,11 @@ export const Navbar = ()=>{
             <div className="hidden w-full md:block md:w-auto dark:text-white/90" id="navbar-multi-level">
                 
                 {
-                    auth.isAuthenticated &&(
+                    auth.isAuthenticated || true &&(
                         <div className="flex gap-4 items-center">
-                            <Link href="/all-tasks" >Home</Link>
+                            <Link href="/table-tasks" >Shadcn table</Link>
+                            <Link href="/tanstack-table-tasks" >TanStack Table</Link>
+                            <Link href="/all-tasks" >All</Link>
                             <Link href="/completed-tasks" >Completed</Link>
                             
                             <h2 onClick={()=>auth.logout()}>Đăng xuất</h2>

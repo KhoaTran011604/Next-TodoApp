@@ -4,7 +4,7 @@ import { getDataFromToken, getItemLocalStore } from 'hooks/useLocalStore'
 
 
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+    baseURL: process.env.NEXT_LOCAL_API_URL || 'http://localhost:5000/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -20,7 +20,6 @@ api.interceptors.request.use((config) => {
             config.headers.Authorization = `Bearer ${user.accessToken}`
         }
     }
-    console.log("token", token);
 
 
     return config

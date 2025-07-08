@@ -20,9 +20,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = () => {
     
     setIsAuthenticated(true);
-    router.push("/all-tasks")
+    router.push("/table-tasks")
   };
-  const logout = () => {setIsAuthenticated(false);router.push("/login")};
+  const logout = () => {setIsAuthenticated(false);router.push("/login-2")};
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

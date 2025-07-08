@@ -1,4 +1,4 @@
-// File: C:\KhoaTranVan\Personal\Training\Skills\NextJS\src\app\completed-tasks\page.tsx
+// File: C:\KhoaTranVan\Personal\Training\Skills\NextJS-v2\src\app\completed-tasks\page.tsx
 import * as entry from '../../../../src/app/completed-tasks/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

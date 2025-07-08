@@ -20,7 +20,7 @@ export default function RootLayout({
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push("/login");
+      router.push("/login-2");
     }
   }, [isAuthenticated]);
 
@@ -36,8 +36,6 @@ export default function RootLayout({
         <StoreProvider>
           <ThemeProvider>
             <AuthProvider>
-              
-                
                 <div>
                   <Navbar/>
                   {children}

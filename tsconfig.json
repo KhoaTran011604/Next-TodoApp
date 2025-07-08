@@ -37,7 +37,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/zustand/store.ts"  ],
   "exclude": [
     "node_modules"
   ]

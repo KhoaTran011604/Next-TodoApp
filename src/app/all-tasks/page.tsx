@@ -5,6 +5,7 @@ import LottieComponent from "@/components/lotties/lottie";
 import { CompletedTodo, CreateTodo, DeleteTodo, GetAllTodo, UpdateTodo } from "api/todoService";
 import {  useEffect, useRef, useState } from "react";
 import { Filter, Task } from "types/MainType";
+import useStore from "zustand/store";
 
 
 const taskInit = {_id:"",title:"",completed:false};
@@ -15,65 +16,12 @@ const filterInit = {
     pageSize: 10,
 }
 const AllTasks = ()=>{
-    //const context = useContext(MainContext);
+    const store = useStore();
+    const {tasks,task,setTask,filterPage,isLoading,LoadAllTasks,handleSubmit,handleCompletedTask,handleDeleteTask} = store
     const inputRef = useRef(null)
-    
-    const [tasks, setTasks] = useState<Task[]>([])
-    const [task, setTask] = useState<Task>(taskInit)
-    const [filterPage, setFilterpage] = useState<Filter>(filterInit)
-    const [isLoading,setIsLoading] =useState<Boolean>(false)
 
-    const LoadData = ()=>{
-        if(isLoading){
-            return
-        }
-        setIsLoading(true)
-        GetAllTodo(filterPage)
-        .then(response =>{
-            if(response.success){
-                setTasks(response.data)
-            }
-        }).catch(err => console.log("err => ",err))
-        .finally(()=>{
-            setIsLoading(false)
-        })
-              
-        
-        
-    }
-
-    const handleCreateTask = async (data:Task)=>{
-        const {_id,...rest} = data
-        const response = await CreateTodo(rest)
-        if(response.success){
-            LoadData()
-        }   
-    }
-    const handleUpdateTask = async (data:Task)=>{
-        const {_id,...rest} = data
-        const response = await UpdateTodo(_id,rest)
-        if(response.success){
-            LoadData()
-        } 
-    }
-    const handleSubmit = (data :Task)=>{
-        setTask(taskInit);
-        task._id.length > 0 ? handleUpdateTask(data) :   handleCreateTask(data)
-    }
-    const handleCompletedTask = async (id:string)=>{
-        const response = await CompletedTodo(id)
-        if(response.success){
-            LoadData()
-        } 
-    }
-    const handleDeleteTask = async (id:string)=>{
-        const response = await DeleteTodo(id)
-        if(response.success){
-            LoadData()
-        } 
-    }
     useEffect(()=>{
-        LoadData()
+        LoadAllTasks()
         if(inputRef){
             inputRef.current.focus()
         }

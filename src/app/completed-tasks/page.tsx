@@ -2,9 +2,9 @@
 import ItemTask from "@/components/ItemTask";
 import LottieComponent from "@/components/lotties/lottie";
 import { GetCompletedTodo } from "api/todoService";
-import { MainContext } from "context/main";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Filter, Task } from "types/MainType";
+import useStore from "zustand/store";
 const filterInit = {
     keySearch: "",
     sort: {},
@@ -12,33 +12,14 @@ const filterInit = {
     pageSize: 10,
 }
 const CompletedTasks = ()=>{
-    const context = useContext(MainContext);
-    const [tasks, setTasks] = useState<Task[]>([])
-    const [filterPage, setFilterpage] = useState<Filter>(filterInit)
-     const [isLoading,setIsLoading] =useState<Boolean>(false)
-    
+ const store = useStore();
+    const {tasks,filterPage,isLoading,LoadCompletedTasks} = store
 
-    const LoadData = ()=>{
-        if(isLoading){
-            return
-        }
-        setIsLoading(true)
-        GetCompletedTodo(filterPage)
-        .then(response =>{
-            if(response.success){
-                setTasks(response.data)
-            }
-        }).catch(err => console.log("err => ",err))
-        .finally(()=>{
-            setIsLoading(false)
-        }) 
-    }
     useEffect(()=>{
         
-        LoadData()
+        LoadCompletedTasks()
     },[filterPage])
 
-    
     return(
         <div className=" text-black dark:bg-black/90 dark:text-white/90 min-h-[calc(100vh-70px)]">
             <h2 className="text-center py-8 text-3xl font-bold">Completed Tasks</h2>
