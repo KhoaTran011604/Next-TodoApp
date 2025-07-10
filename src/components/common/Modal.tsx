@@ -1,4 +1,4 @@
-import { Button } from "@/styles/components/ui/button"
+import { Button } from '@/styles/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,11 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/styles/components/ui/dialog"
-import { Input } from "@/styles/components/ui/input"
-import { Label } from "@/styles/components/ui/label"
+} from '@/styles/components/ui/dialog';
+import { Input } from '@/styles/components/ui/input';
+import { Label } from '@/styles/components/ui/label';
 
-export function Modal({open,setOpen,children}) {
+export function Modal({ open, setOpen, children }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div>
@@ -22,5 +22,5 @@ export function Modal({open,setOpen,children}) {
         {children}
       </div>
     </Dialog>
-  )
+  );
 }

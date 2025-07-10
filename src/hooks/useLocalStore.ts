@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
-import { UserTokenPayload } from "types/MainType";
+import { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { UserTokenPayload } from 'types/MainType';
 function useLocalStore(key, initialValue) {
   // Lấy giá trị từ localStorage hoặc dùng giá trị mặc định
   const [value, setValue] = useState(() => {
@@ -27,15 +27,13 @@ export function setItemLocalStore(key, value) {
 }
 
 export function getDataFromToken(token) {
-
-
   try {
     const decoded = jwtDecode(token);
     return decoded as UserTokenPayload; // Giả sử backend lưu email hoặc username trong token
   } catch (error) {
-    console.error("Invalid token", error);
+    console.error('Invalid token', error);
     return null;
   }
-};
+}
 
 export default useLocalStore;

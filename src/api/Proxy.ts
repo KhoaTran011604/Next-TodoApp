@@ -1,9 +1,7 @@
 // services/proxyService.ts
 
-import api from "lib/api"
-import { BaseResponse, MetaDataStruct } from "./BaseResponse"
-
-
+import api from 'lib/api';
+import { BaseResponse, MetaDataStruct } from './BaseResponse';
 
 export const Proxy = async <T = any>(
   method: string,
@@ -14,30 +12,39 @@ export const Proxy = async <T = any>(
   try {
     const config = {
       headers: {} as Record<string, any>,
+    };
+
+
+    // ✅ Gắn token nếu được yêu cầu
+    if (isUseToken) {
+      const accessToken = localStorage.getItem('@accessToken'); // Hoặc từ context, cookie, zustand...
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
+      }
     }
 
     if (method.toLowerCase() === 'post_multi') {
-      config.headers['Content-Type'] = 'multipart/form-data'
+      config.headers['Content-Type'] = 'multipart/form-data';
     }
 
-    let response
+    let response;
 
     switch (method.toLowerCase()) {
       case 'get':
-        response = await api.get(endpoint)
-        break
+        response = await api.get(endpoint);
+        break;
       case 'post':
       case 'post_multi':
-        response = await api.post(endpoint, request, config)
-        break
+        response = await api.post(endpoint, request, config);
+        break;
       case 'put':
-        response = await api.put(endpoint, request, config)
-        break
+        response = await api.put(endpoint, request, config);
+        break;
       case 'delete':
-        response = await api.delete(endpoint, { data: request, ...config })
-        break
+        response = await api.delete(endpoint, { data: request, ...config });
+        break;
       default:
-        throw new Error(`Unsupported method: ${method}`)
+        throw new Error(`Unsupported method: ${method}`);
     }
 
     return new BaseResponse<T>(
@@ -45,13 +52,13 @@ export const Proxy = async <T = any>(
       '',
       response.data?.data,
       response.data?.metaData || new MetaDataStruct()
-    )
+    );
   } catch (err: any) {
     return new BaseResponse<T>(
       false,
       err?.response?.data?.message || 'Request failed',
       null,
       new MetaDataStruct()
-    )
+    );
   }
-}
+};

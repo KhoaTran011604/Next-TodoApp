@@ -1,10 +1,10 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import type { AnyObjectSchema } from "yup";
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import type { AnyObjectSchema } from 'yup';
 
 type FormWrapperProps<T extends AnyObjectSchema> = {
-  schema: T;
+  schema: T; ///dèauvalue
   onSubmit: (data: any) => void;
   children: React.ReactNode;
   options?: Parameters<typeof useForm>[0];
@@ -16,7 +16,7 @@ const FormWrapper = <T extends AnyObjectSchema>({
   onSubmit,
   children,
   options,
-  className = "",
+  className = '',
 }: FormWrapperProps<T>) => {
   const methods = useForm({
     resolver: yupResolver(schema),

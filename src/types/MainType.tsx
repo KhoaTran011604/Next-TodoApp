@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from 'react';
+
 // Định nghĩa kiểu cho từng task (bạn có thể sửa theo cấu trúc thật)
 export type Task = {
   _id: string;
@@ -12,11 +14,30 @@ export type Filter = {
   sort: Record<string, SortOrder>;
   page: number;
   pageSize: number;
+  sessionCode: string;
+  sortField?: string;
+  sortOrder?: string;
 };
 
 export type UserTokenPayload = {
-  accessToken: string
-  userId: string
-  exp?: number
-  iat?: number
-}
+  accessToken: string;
+  userId: string;
+  exp?: number;
+  iat?: number;
+};
+
+export type InputFieldProps = {
+  name: string;
+  type?: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+};
+
+export type HD_InputProps = {
+  title?: string;
+  isItemForm?: boolean;
+  name: string;
+  type?: string;
+  initValue?: string;
+  onChange: (value: string) => void;
+};
