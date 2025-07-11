@@ -1,4 +1,4 @@
-import TodoDisplay from './TodoDisplay';
+import TodoDisplay from "./TodoDisplay";
 
 export type TodoData = {
   id: number;
@@ -7,16 +7,10 @@ export type TodoData = {
   path?: string;
 };
 
-export type Props = {
-  params: {
-    TodoId: string;
-  };
-};
-
-export default async function Todo({ params: { TodoId } }: Props) {
+export default async function Todo() {
   const todoData = {
     id: 1,
-    title: 'React JS',
+    title: "React JS",
     completed: false,
   };
 

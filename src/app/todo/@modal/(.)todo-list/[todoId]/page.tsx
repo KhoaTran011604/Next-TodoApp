@@ -1,16 +1,10 @@
-import { Modal } from '@/components/Modal';
-import TodoDisplay from 'app/todo/todo-list/[todoId]/TodoDisplay';
+import { Modal } from "@/components/Modal";
+import TodoDisplay from "app/todo/todo-list/[todoId]/TodoDisplay";
 
-type Props = {
-  params: {
-    todoId: string;
-  };
-};
-
-export default async function Todo({ params: { todoId } }: Props) {
+export default async function Todo() {
   const todoData = {
     id: 1,
-    title: 'React JS',
+    title: "React JS",
     completed: false,
   };
 
