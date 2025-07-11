@@ -2,14 +2,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "checklint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "checklint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "format": "prettier --write .",
-    "check:ts": "tsc --noEmit",
-    "check:lint": "eslint . --ext .ts,.tsx",
-    "check": "npm run check:ts && npm run check:lint"
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -28,11 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
-    "eslint": "^9.30.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.5.1",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
@@ -40,7 +29,7 @@
     "lucide-react": "^0.525.0",
     "next": "^15.3.5",
     "postcss": "^8.5.6",
-    "prettier": "^3.6.2",
+    
     "rc-pagination": "^5.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

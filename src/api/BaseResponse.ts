@@ -1,5 +1,3 @@
-
-
 export class MetaDataStruct {
   totalRecords: number;
   totalPages: number;

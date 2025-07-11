@@ -1,14 +1,8 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/completed-tasks/page": "app/completed-tasks/page.js",
-  "/all-tasks/page": "app/all-tasks/page.js",
-  "/login/page": "app/login/page.js",
-  "/register/page": "app/register/page.js",
-  "/table-tasks/page": "app/table-tasks/page.js",
+  "/login-2/page": "app/login-2/page.js",
   "/page": "app/page.js",
   "/tanstack-table-tasks/page": "app/tanstack-table-tasks/page.js",
-  "/login-2/page": "app/login-2/page.js",
-  "/todo/page": "app/todo/page.js",
-  "/todo/todo-list/[todoId]/page": "app/todo/todo-list/[todoId]/page.js",
-  "/todo/@modal/(.)todo-list/[todoId]/page": "app/todo/@modal/(.)todo-list/[todoId]/page.js"
+  "/table-tasks/page": "app/table-tasks/page.js",
+  "/completed-tasks/page": "app/completed-tasks/page.js"
 }

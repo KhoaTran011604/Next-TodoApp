@@ -1,1 +1,1 @@
-self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST='[{"source":"/todo/todo-list/:todoId","destination":"/todo/(.)todo-list/:todoId","has":[{"type":"header","key":"Next-Url","value":"\\\\/todo(?:\\\\/(.*))?[\\\\/#\\\\?]?"}]}]';
+self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST="[{\"source\":\"/todo/todo-list/:todoId\",\"destination\":\"/todo/(.)todo-list/:todoId\",\"has\":[{\"type\":\"header\",\"key\":\"Next-Url\",\"value\":\"\\\\/todo(?:\\\\/(.*))?[\\\\/#\\\\?]?\"}]}]"

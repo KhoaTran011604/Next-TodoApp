@@ -1,5 +1,3 @@
-
-
 import api from 'lib/api';
 import { BaseResponse, MetaDataStruct } from './BaseResponse';
 

@@ -13,12 +13,10 @@ function useLocalStore(key, initialValue) {
   return [value, setValue];
 }
 
-
 export function getItemLocalStore(key, defaultValue = null) {
   const storedValue = localStorage.getItem(key);
   return storedValue ? JSON.parse(storedValue) : defaultValue;
 }
-
 
 export function setItemLocalStore(key, value) {
   localStorage.setItem(key, JSON.stringify(value));

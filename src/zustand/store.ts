@@ -64,8 +64,8 @@ const useStore = create<StoreState>((set, get) => ({
     set({ isLoading: status });
   },
   setTotalRecords: (total: number) => {
-    set({ totalRecords: total })
-  }
+    set({ totalRecords: total });
+  },
   // LoadAllTasks: async () => {
   //   if (get().isLoading) {
   //     return;
