@@ -1,13 +1,13 @@
-'use client';
-import { StoreProvider } from 'context/store';
-import { ThemeProvider } from 'context/theme';
-import '../../main.css';
-import { Navbar } from '@/components/Navbar';
-import { useEffect, useState } from 'react';
-import { AuthProvider, useAuth } from 'context/auth';
-import { useRouter } from 'next/navigation';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+"use client";
+import { StoreProvider } from "context/store";
+import { ThemeProvider } from "context/theme";
+import "../../main.css";
+import { Navbar } from "@/components/Navbar";
+import { useEffect, useState } from "react";
+import { AuthProvider, useAuth } from "context/auth";
+import { useRouter } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function RootLayout({
   children,
@@ -22,7 +22,7 @@ export default function RootLayout({
         defaultOptions: {
           queries: {
             staleTime: 1000 * 60 * 5, // 5 phút dữ liệu không "stale"
-            cacheTime: 1000 * 60 * 30, // 30 phút trước khi cache bị xoá
+            //cacheTime: 1000 * 60 * 30, // 30 phút trước khi cache bị xoá
             refetchOnWindowFocus: false,
           },
         },
@@ -30,7 +30,7 @@ export default function RootLayout({
   );
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login-2');
+      router.push("/login-2");
     }
   }, [isAuthenticated]);
 
