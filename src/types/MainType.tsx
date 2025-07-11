@@ -40,3 +40,8 @@ export type HD_InputProps = {
   initValue?: string;
   onChange: (value: string) => void;
 };
+
+export type LoginProps = {
+  email: string;
+  password: string;
+};

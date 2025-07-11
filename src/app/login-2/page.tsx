@@ -11,11 +11,13 @@ import Link from 'next/link';
 
 import { useState } from 'react';
 import { loginSchema } from 'shemas/loginSchema';
+import { LoginProps } from 'types/MainType';
 const initData = {
   email: '',
   password: '',
 };
-const Login = ({ email, password }: { email: string; password: string }) => {
+
+const Login = () => {
   const auth = useAuth();
   const [data, setData] = useState(initData);
 
