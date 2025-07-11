@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../styles/components/ui/table';
-import { Task } from 'types/MainType';
-import DefaultHeader from './default-header';
+} from "../styles/components/ui/table";
+import { Task } from "types/MainType";
+import DefaultHeader from "./default-header";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   ColumnDef,
   createColumnHelper,
@@ -27,12 +27,12 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
-} from '@tanstack/react-table';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from './ui/button';
-import { BadgeCheckIcon, MoreVertical } from 'lucide-react';
-import { useState } from 'react';
-import { Badge } from '@/styles/components/ui/badge';
+} from "@tanstack/react-table";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "./ui/button";
+import { BadgeCheckIcon, MoreVertical } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/styles/components/ui/badge";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,13 +51,13 @@ export default function HyperTodoTable({
 }) {
   const columns = [
     columnHelper.display({
-      id: 'action',
+      id: "action",
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
+          // checked={
+          //   table.getIsAllPageRowsSelected() ||
+          //   (table.getIsSomePageRowsSelected() && 'indeterminate')
+          // }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -72,11 +72,11 @@ export default function HyperTodoTable({
       enableSorting: false,
       enableHiding: false,
     }),
-    columnHelper.accessor('title', {
+    columnHelper.accessor("title", {
       header: (info) => <DefaultHeader info={info} name="Title" />,
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('completed', {
+    columnHelper.accessor("completed", {
       header: (info) => <DefaultHeader info={info} name="Completed" />,
       cell: (info) => (
         <div>
@@ -92,7 +92,7 @@ export default function HyperTodoTable({
         </div>
       ),
     }),
-    columnHelper.accessor('actions', {
+    columnHelper.accessor("actions", {
       header: (info) => <DefaultHeader info={info} name="Actions" />,
       cell: (info) => {
         return (
@@ -118,12 +118,12 @@ export default function HyperTodoTable({
       },
     }),
     columnHelper.display({
-      id: 'more',
+      id: "more",
       cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant={'ghost'} className="h-8 w-8">
+              <Button variant={"ghost"} className="h-8 w-8">
                 <MoreVertical className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -213,7 +213,7 @@ function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() && "selected"}
                   onDoubleClick={() => {
                     onDoubleClick(row);
                   }}
@@ -256,7 +256,7 @@ function DataTable<TData, TValue>({
         </button>
 
         <span>
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </span>
 
