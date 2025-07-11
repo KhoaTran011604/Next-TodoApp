@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { apiLogin, AuthVertify, RefreshToken, SignUp } from 'api/authService';
-import { getDataFromToken } from 'hooks/useLocalStore';
-import Cookies from 'js-cookie';
-import { decryptData, encryptData } from 'lib/crypto';
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiLogin, AuthVertify, RefreshToken, SignUp } from "api/authService";
+import { getDataFromToken } from "hooks/useLocalStore";
+import Cookies from "js-cookie";
+import { decryptData, encryptData } from "lib/crypto";
 
 type AuthPayload = {
   email: string;
@@ -21,16 +21,16 @@ type LoginResponse = {
 type AuthContextType = {
   isAuthenticated: boolean;
   user: any;
-  login: (data: AuthPayload) => LoginResponse;
-  register: (data: SignUpPayload) => boolean;
+  login: (data: AuthPayload) => Promise<LoginResponse>;
+  register: (data: SignUpPayload) => Promise<boolean>;
   logout: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: {},
-  login: (data) => ({ success: false, data: {} }),
-  register: (data) => false,
+  login: async (data) => ({ success: false, data: {} }),
+  register: async (data) => false,
   logout: () => true,
 });
 
@@ -52,12 +52,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         accessToken,
         refreshToken,
       });
-      Cookies.set('token_info', encrypted, { expires: 7 }); // lưu 7 ngày
+      Cookies.set("token_info", encrypted, { expires: 7 }); // lưu 7 ngày
       //localStorage.setItem('@accessToken', accessToken);
       //localStorage.setItem('@refreshToken', refreshToken);
 
       setIsAuthenticated(true);
-      router.push('/table-tasks');
+      router.push("/table-tasks");
       return { success: true, data: dataToken };
     } else {
       return { success: false, data: {} };
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return true;
   };
   const getTokensFromCookies = () => {
-    const encryptedToken = Cookies.get('token_info');
+    const encryptedToken = Cookies.get("token_info");
     if (encryptedToken) {
       try {
         const token_info = decryptData(encryptedToken); // Giải mã token
@@ -84,14 +84,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return token_info;
         }
       } catch (err) {
-        console.error('Lỗi giải mã token từ cookie:', err);
+        console.error("Lỗi giải mã token từ cookie:", err);
       }
     }
     return null;
   };
   const vertifyToken = async () => {
     var token_info = getTokensFromCookies();
-    console.log('token_info', token_info);
+    console.log("token_info", token_info);
     if (!token_info) {
       return;
     }
@@ -100,8 +100,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (response.success) {
       setIsAuthenticated(true);
       setUser(response.data);
-      router.push('/table-tasks');
-    } else if (!response.success && response.message === 'TokenExpiredError') {
+      router.push("/table-tasks");
+    } else if (!response.success && response.message === "TokenExpiredError") {
       //1.Call API to refresh token
 
       const refreshToken = token_info.refreshToken;
@@ -116,15 +116,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           accessToken: res.data.accessToken,
           refreshToken,
         });
-        Cookies.set('token_info', encrypted, { expires: 7 }); // lưu 7 ngày
+        Cookies.set("token_info", encrypted, { expires: 7 }); // lưu 7 ngày
 
         vertifyToken();
       } else {
         //+Vertify false -> router push to login
-        router.push('/login-2');
+        router.push("/login-2");
       }
     } else {
-      router.push('/login-2');
+      router.push("/login-2");
     }
   };
 
