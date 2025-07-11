@@ -1,10 +1,10 @@
-'use client';
-import Link from 'next/link';
-import { useAuth } from '../context/auth';
-import ThemeToggleButton from './common/ThemeToggleButton';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+"use client";
+import Link from "next/link";
+import { useAuth } from "../context/auth";
+import ThemeToggleButton from "./common/ThemeToggleButton";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 export const Navbar = () => {
   const auth = useAuth();
   const router = useRouter();
@@ -65,13 +65,13 @@ export const Navbar = () => {
                 onClick={async () => {
                   const res = auth.logout();
                   if (res) {
-                    queryClient.removeQueries([
-                      '#todoList',
-                      '#todoList_Completed',
-                      '#user',
-                    ]); // key dạng mảng hoặc chuỗi
-                    Cookies.remove('token_info');
-                    router.push('/login-2');
+                    ["#todoList", "#todoList_Completed", "#user"].forEach(
+                      (key) => {
+                        queryClient.removeQueries({ queryKey: [key] });
+                      }
+                    );
+                    Cookies.remove("token_info");
+                    router.push("/login-2");
                   }
                 }}
               >{`${auth.user.fullName} | Đăng xuất`}</h2>
