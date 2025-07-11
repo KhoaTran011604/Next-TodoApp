@@ -1,10 +1,10 @@
-'use client';
-import FormWrapper from '@/components/FormWrapper';
-import { useAuth } from 'context/auth';
-import Link from 'next/link';
-import { ChangeEventHandler, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { registerSchema } from 'shemas/registerSchema';
+"use client";
+import FormWrapper from "@/components/FormWrapper";
+import { useAuth } from "context/auth";
+import Link from "next/link";
+import { ChangeEventHandler, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { registerSchema } from "shemas/registerSchema";
 
 type InputFieldProps = {
   name: string;
@@ -17,16 +17,16 @@ const Register = () => {
   const auth = useAuth();
 
   const [data, setData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    password_again: '',
+    fullName: "",
+    email: "",
+    password: "",
+    password_again: "",
   });
 
   const InputField = ({
     name,
-    type = 'text',
-    value = '',
+    type = "text",
+    value = "",
     onChange,
   }: InputFieldProps) => {
     const {
@@ -55,9 +55,9 @@ const Register = () => {
   const handleSubmit = async () => {
     if (data.password === data.password_again) {
       const res = await auth.register(data);
-      alert(res ? 'Register success!!' : 'Register fail!!!!');
+      alert(res ? "Register success!!" : "Register fail!!!!");
     } else {
-      alert('Mật khẩu không khớp!!');
+      alert("Mật khẩu không khớp!!");
     }
   };
   return (
@@ -76,11 +76,11 @@ const Register = () => {
           </label>
           <InputField
             name="name"
-            value={data.name}
+            value={data.fullName}
             onChange={(e) => {
               setData({
                 ...data,
-                email: e.target.value,
+                fullName: e.target.value,
               });
             }}
           />
@@ -128,7 +128,7 @@ const Register = () => {
             }
           />
           <div className=" w-full flex justify-end">
-            <Link href={'/login-2'} className=" text-blue-500 text-sm">
+            <Link href={"/login-2"} className=" text-blue-500 text-sm">
               Go to login
             </Link>
           </div>
