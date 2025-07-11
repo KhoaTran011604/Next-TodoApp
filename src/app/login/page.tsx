@@ -1,13 +1,13 @@
-'use client';
-import { useAuth } from 'context/auth';
-import { useState } from 'react';
+"use client";
+import { useAuth } from "context/auth";
+import { useState } from "react";
 
 const Login = () => {
   const auth = useAuth();
 
   const [data, setData] = useState({
-    email: 'khoa',
-    password: '1234',
+    email: "khoa",
+    password: "1234",
   });
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -83,13 +83,13 @@ const Login = () => {
               <button
                 className="bg-black text-white w-full rounded-xl py-4 mt-8"
                 onClick={() => {
-                  auth.login();
+                  //auth.login();
                 }}
               >
                 Submit
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{' '}
+                Don’t have an account yet?{" "}
                 <a
                   href="#"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
