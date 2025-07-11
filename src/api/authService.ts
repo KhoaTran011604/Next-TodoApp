@@ -26,3 +26,8 @@ export async function AuthVertify(request) {
 
     return await Proxy("post", "/auth-vertify/", request, true);
 }
+
+export async function RefreshToken(request) {
+
+    return await Proxy("post", "/refresh-token/", request, false);
+}

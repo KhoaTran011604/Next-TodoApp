@@ -36,7 +36,7 @@ import { debounce } from 'lodash';
 import { getItemLocalStore, setItemLocalStore } from 'hooks/useLocalStore';
 import isEqual from 'lodash/isEqual';
 import TodoTable2 from '@/components/HyperTodoTable';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 const taskInit = { _id: '', title: '', completed: false };
 const filterInit = {
@@ -48,13 +48,8 @@ const filterInit = {
 };
 const AllTasks = () => {
   const inputRef = useRef(null);
-
-  const { data: todos } = useQuery({
-    queryKey: ['#todoList'],
-    queryFn: async () => [],
-    enabled: false, // không gọi lại API
-  });
-
+  const queryClient = useQueryClient();
+  const cachedStore = queryClient.getQueryData(['#todoList']);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<Task>(taskInit);
   const [filterPage, setFilterPage] = useState<Filter>(filterInit);
@@ -75,7 +70,10 @@ const AllTasks = () => {
       .then((response) => {
         if (response.success) {
           setTasks(response.data);
-          setItemLocalStore('#todoList', response.data);
+
+          queryClient.setQueryData(['#todoList'], () => {
+            return response.data; // thêm mới
+          });
           setTotalRecords(response.metaData.totalRecords);
         }
       })
@@ -138,8 +136,7 @@ const AllTasks = () => {
     if (!isFirstLoad.current && !isEqual(filterPage, filterInit)) {
       LoadData();
     } else {
-      const localstore = getItemLocalStore('#todoList');
-      localstore ? setTasks(localstore) : LoadData();
+      cachedStore ? setTasks(cachedStore as Task[]) : LoadData();
       isFirstLoad.current = false;
       return;
     }

@@ -8,12 +8,12 @@ const MyPagination = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const handlePageChange = (page) => {
-    setCurrentPage(page); // Cập nhật state
+    setCurrentPage(page);
     setFilterPage({ ...filterPage, page: page });
   };
   const handlePageSizeChange = (current, newSize) => {
     setPageSize(newSize);
-    setCurrentPage(1); // Reset về trang 1 khi đổi pageSize
+    setCurrentPage(1);
   };
   useEffect(() => {
     setCurrentPage(filterPage.page);
@@ -23,8 +23,8 @@ const MyPagination = (props) => {
     <div className="flex justify-end">
       <div className="flex items-center justify-between gap-2 px-6 py-4 sm:justify-normal">
         <Pagination
-          total={totalRecords} // Tổng số item
-          pageSize={pageSize} // Số item mỗi trang
+          total={totalRecords}
+          pageSize={pageSize}
           locale={{
             items_per_page: '/ page',
             jump_to: 'go to',
@@ -33,12 +33,12 @@ const MyPagination = (props) => {
             prev_page: 'Prev',
             next_page: 'Next',
           }}
-          showQuickJumper // Bật ô nhập số trang nhảy nhanh
+          showQuickJumper
           showTitle={false}
           current={currentPage}
           onChange={handlePageChange}
-          showSizeChanger // ✅ Bật dropdown chọn pageSize
-          pageSizeOptions={[5, 10, 15]} // ✅ Hiển thị các lựa chọn 5, 10, 15
+          showSizeChanger
+          pageSizeOptions={[5, 10, 15]}
           onShowSizeChange={(current, size) =>
             handlePageSizeChange(current, size)
           }

@@ -1,5 +1,4 @@
 'use client';
-import { MainProvider } from 'context/main';
 import { StoreProvider } from 'context/store';
 import { ThemeProvider } from 'context/theme';
 import '../../main.css';
@@ -7,7 +6,6 @@ import { Navbar } from '@/components/Navbar';
 import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from 'context/auth';
 import { useRouter } from 'next/navigation';
-import Head from 'next/head';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -54,7 +52,7 @@ export default function RootLayout({
                   {children}
                 </div>
               </AuthProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </ThemeProvider>
         </StoreProvider>

@@ -1,4 +1,4 @@
-// types/BaseResponse.ts
+
 
 export class MetaDataStruct {
   totalRecords: number;

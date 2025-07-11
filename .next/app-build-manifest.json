@@ -6,6 +6,11 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
     "/login-2/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -21,15 +26,35 @@
       "static/chunks/main-app.js",
       "static/chunks/app/tanstack-table-tasks/page.js"
     ],
-    "/completed-tasks/page": [
+    "/todo/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/completed-tasks/page.js"
+      "static/chunks/app/todo/layout.js"
     ],
-    "/all-tasks/page": [
+    "/todo/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/all-tasks/page.js"
+      "static/chunks/app/todo/page.js"
+    ],
+    "/todo/@modal/default": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/todo/@modal/default.js"
+    ],
+    "/todo/@modal/(.)todo-list/[todoId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/todo/@modal/(.)todo-list/[todoId]/page.js"
+    ],
+    "/todo/todo-list/[todoId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/todo/todo-list/[todoId]/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

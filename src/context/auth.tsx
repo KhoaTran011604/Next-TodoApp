@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiLogin, AuthVertify, SignUp } from 'api/authService';
+import { apiLogin, AuthVertify, RefreshToken, SignUp } from 'api/authService';
 import { getDataFromToken } from 'hooks/useLocalStore';
+import Cookies from 'js-cookie';
+import { decryptData, encryptData } from 'lib/crypto';
 
 type AuthPayload = {
   email: string;
@@ -21,7 +23,7 @@ type AuthContextType = {
   user: any;
   login: (data: AuthPayload) => LoginResponse;
   register: (data: SignUpPayload) => boolean;
-  logout: () => void;
+  logout: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -29,7 +31,7 @@ const AuthContext = createContext<AuthContextType>({
   user: {},
   login: (data) => ({ success: false, data: {} }),
   register: (data) => false,
-  logout: () => {},
+  logout: () => true,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -41,11 +43,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (res.success) {
       const dataToken = getDataFromToken(res.data.accessToken);
+
       if (dataToken) {
         setUser(dataToken);
       }
-      localStorage.setItem('@accessToken', res.data.accessToken);
-      console.log('getDataFromToken', dataToken);
+      const { accessToken, refreshToken } = res.data;
+      const encrypted = encryptData({
+        accessToken,
+        refreshToken,
+      });
+      Cookies.set('token_info', encrypted, { expires: 7 }); // lưu 7 ngày
+      //localStorage.setItem('@accessToken', accessToken);
+      //localStorage.setItem('@refreshToken', refreshToken);
 
       setIsAuthenticated(true);
       router.push('/table-tasks');
@@ -59,28 +68,69 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return res.success ? true : false;
   };
   const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('#todoList');
-    localStorage.removeItem('#todoList_Completed');
-    localStorage.removeItem('@accessToken');
-    router.push('/login-2');
+    // setIsAuthenticated(false);
+    // localStorage.removeItem('#todoList');
+    // localStorage.removeItem('#todoList_Completed');
+    // localStorage.removeItem('@accessToken');
+    return true;
   };
+  const getTokensFromCookies = () => {
+    const encryptedToken = Cookies.get('token_info');
+    if (encryptedToken) {
+      try {
+        const token_info = decryptData(encryptedToken); // Giải mã token
 
+        if (token_info) {
+          return token_info;
+        }
+      } catch (err) {
+        console.error('Lỗi giải mã token từ cookie:', err);
+      }
+    }
+    return null;
+  };
   const vertifyToken = async () => {
+    var token_info = getTokensFromCookies();
+    console.log('token_info', token_info);
+    if (!token_info) {
+      return;
+    }
     const response = await AuthVertify({});
-    console.log('response', response);
 
     if (response.success) {
       setIsAuthenticated(true);
       setUser(response.data);
       router.push('/table-tasks');
+    } else if (!response.success && response.message === 'TokenExpiredError') {
+      //1.Call API to refresh token
+
+      const refreshToken = token_info.refreshToken;
+
+      const res = await RefreshToken({ refreshToken });
+
+      //2.Receive new accessToken and vertify
+      if (res.success) {
+        //+Vertify true -> pass
+        //localStorage.setItem('@accessToken', res.data.accessToken);
+        const encrypted = encryptData({
+          accessToken: res.data.accessToken,
+          refreshToken,
+        });
+        Cookies.set('token_info', encrypted, { expires: 7 }); // lưu 7 ngày
+
+        vertifyToken();
+      } else {
+        //+Vertify false -> router push to login
+        router.push('/login-2');
+      }
+    } else {
+      router.push('/login-2');
     }
   };
 
   useEffect(() => {
     vertifyToken();
   }, []);
-  console.log(user);
 
   return (
     <AuthContext.Provider

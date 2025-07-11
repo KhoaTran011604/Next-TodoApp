@@ -1,4 +1,3 @@
-// context/MainContext.tsx
 'use client';
 
 import React, {
@@ -10,7 +9,6 @@ import React, {
 } from 'react';
 import { Task } from 'types/MainType';
 
-// Kiểu của context
 type MainContextType = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
@@ -22,13 +20,10 @@ type MainContextType = {
   handleCompletedTask: (index: number) => void;
 };
 
-// Tạo context
-// ✅ Tạo và export Context
 export const MainContext = createContext<MainContextType | undefined>(
   undefined
 );
 
-// Provider
 export const MainProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   useEffect(() => {
@@ -98,7 +93,6 @@ export const MainProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook để dùng trong component
 export const useMainContext = () => {
   const context = useContext(MainContext);
   if (!context)

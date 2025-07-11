@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { AnyObjectSchema } from 'yup';
 
 type FormWrapperProps<T extends AnyObjectSchema> = {
-  schema: T; ///dèauvalue
+  schema: T;
   onSubmit: (data: any) => void;
   children: React.ReactNode;
   options?: Parameters<typeof useForm>[0];

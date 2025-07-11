@@ -1,10 +1,15 @@
 'use client';
 import ItemTask from '@/components/ItemTask';
 import LottieComponent from '@/components/lotties/lottie';
-import { GetCompletedTodo } from 'api/todoService';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  GetCompletedTodo,
+  GetCompletedTodo_WithoutPanigation,
+} from 'api/todoService';
 import { getItemLocalStore } from 'hooks/useLocalStore';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Filter, Task } from 'types/MainType';
+import isEqual from 'lodash/isEqual';
 import useStore from 'zustand/store';
 const filterInit = {
   keySearch: '',
@@ -15,11 +20,42 @@ const filterInit = {
 };
 const CompletedTasks = () => {
   const store = useStore();
-  const { tasks, setTasks, filterPage, isLoading, LoadCompletedTasks } = store;
+  const {
+    tasks,
+    setTasks,
+    filterPage,
+    isLoading,
+    setIsLoading,
+    setTotalRecords,
+  } = store;
+  const queryClient = useQueryClient();
+  // Truy cập dữ liệu đã cache
+  const cachedStore = queryClient.getQueryData(['#todoList_Completed']);
 
+  const LoadCompletedTasks = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(false);
+    GetCompletedTodo_WithoutPanigation(filterPage)
+      .then((response) => {
+        if (response.success) {
+          setTasks(response.data);
+          queryClient.setQueryData(['#todoList_Completed'], () => {
+            return response.data; // thêm mới
+          });
+          setTotalRecords(response.metaData.totalRecords);
+        }
+      })
+      .catch((err) => console.log('err => ', err))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const isFirstLoad = useRef(true); // 👈 đánh dấu lần render đầu tiên
   useEffect(() => {
-    const localstore = getItemLocalStore('#todoList_Completed');
-    localstore ? setTasks(localstore) : LoadCompletedTasks();
+    cachedStore ? setTasks(cachedStore as Task[]) : LoadCompletedTasks();
   }, [filterPage]);
 
   return (

@@ -2,8 +2,17 @@
 
 import ItemTask from '@/components/ItemTask';
 import LottieComponent from '@/components/lotties/lottie';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  CompletedTodo,
+  CreateTodo,
+  DeleteTodo,
+  GetAllTodo_WithoutPanigation,
+  UpdateTodo,
+} from 'api/todoService';
 import { getItemLocalStore } from 'hooks/useLocalStore';
 import { useEffect, useRef } from 'react';
+import { Task } from 'types/MainType';
 import useStore from 'zustand/store';
 
 const taskInit = { _id: '', title: '', completed: false };
@@ -17,19 +26,78 @@ const AllTasks = () => {
     setTask,
     filterPage,
     isLoading,
-    LoadAllTasks,
-    handleSubmit,
-    handleCompletedTask,
-    handleDeleteTask,
+    setIsLoading,
+    open,
+    setOpen,
+    error,
+    setError,
   } = store;
   const inputRef = useRef(null);
-  useEffect(() => {
-    const localstore = getItemLocalStore('#todoList');
-    localstore ? setTasks(localstore) : LoadAllTasks();
+  const queryClient = useQueryClient();
 
-    if (inputRef) {
-      inputRef.current.focus();
+  const cachedStore = queryClient.getQueryData(['#todoList']);
+
+  const handleCreateTask = async (data: Task) => {
+    const { _id, ...rest } = data;
+    const response = await CreateTodo(rest);
+    if (response.success) {
+      LoadAllTasks();
     }
+  };
+  const handleUpdateTask = async (data: Task) => {
+    const { _id, ...rest } = data;
+    const response = await UpdateTodo(_id, rest);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+
+  const handleCompletedTask = async (id: string) => {
+    const response = await CompletedTodo(id);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+  const handleDeleteTask = async (id: string) => {
+    const response = await DeleteTodo(id);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+
+  const handleSubmit = (data: Task) => {
+    if (task.title.length === 0) {
+      setError(true);
+      return;
+    }
+    setOpen(false);
+    task._id.length > 0 ? handleUpdateTask(data) : handleCreateTask(data);
+  };
+  const LoadAllTasks = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+
+    GetAllTodo_WithoutPanigation(filterPage)
+      .then((response) => {
+        if (response.success) {
+          setTasks(response.data);
+          //setItemLocalStore('#todoList', response.data);
+          queryClient.setQueryData(['#todoList'], () => {
+            return response.data; // thêm mới
+          });
+        }
+      })
+      .catch((err) => console.log('err => ', err))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const isFirstLoad = useRef(true); // 👈 đánh dấu lần render đầu tiên
+  useEffect(() => {
+    setTask(taskInit);
+    cachedStore ? setTasks(cachedStore as Task[]) : LoadAllTasks();
   }, [filterPage]);
 
   return (

@@ -45,9 +45,11 @@ const Login = ({ email, password }: { email: string; password: string }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async () => Login(), // ví dụ login
+    mutationFn: async () => Login(),
     onSuccess: async (dataLogin) => {
       if (dataLogin.success) {
+        console.log('dataLogin', dataLogin);
+
         const [todos, completed] = await Promise.all([
           GetAllTodo(),
           GetCompletedTodo(),
@@ -59,8 +61,6 @@ const Login = ({ email, password }: { email: string; password: string }) => {
     },
   });
   const handleSubmit = () => {
-    console.log('Login');
-
     mutation.mutate();
   };
 

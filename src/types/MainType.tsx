@@ -1,6 +1,5 @@
 import { ChangeEventHandler } from 'react';
 
-// Định nghĩa kiểu cho từng task (bạn có thể sửa theo cấu trúc thật)
 export type Task = {
   _id: string;
   title: string;

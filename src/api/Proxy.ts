@@ -1,4 +1,4 @@
-// services/proxyService.ts
+
 
 import api from 'lib/api';
 import { BaseResponse, MetaDataStruct } from './BaseResponse';
@@ -14,10 +14,8 @@ export const Proxy = async <T = any>(
       headers: {} as Record<string, any>,
     };
 
-
-    // ✅ Gắn token nếu được yêu cầu
     if (isUseToken) {
-      const accessToken = localStorage.getItem('@accessToken'); // Hoặc từ context, cookie, zustand...
+      const accessToken = localStorage.getItem('@accessToken');
       if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }

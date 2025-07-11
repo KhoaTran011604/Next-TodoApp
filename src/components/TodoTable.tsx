@@ -34,6 +34,14 @@ import { Input } from '@/styles/components/ui/input';
 import { Button } from '@/styles/components/ui/button';
 import { getItemLocalStore } from 'hooks/useLocalStore';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  CompletedTodo,
+  CreateTodo,
+  DeleteTodo,
+  GetAllTodo_WithoutPanigation,
+  UpdateTodo,
+} from 'api/todoService';
 
 const taskInit = { _id: '', title: '', completed: false };
 export default function TodoTable() {
@@ -43,17 +51,17 @@ export default function TodoTable() {
     task,
     setTask,
     setTasks,
+    isLoading,
+    setIsLoading,
     filterPage,
     open,
     setOpen,
     error,
     setError,
-    handleUpdateTask,
-    handleCreateTask,
-    LoadAllTasks,
-    handleCompletedTask,
-    handleDeleteTask,
   } = store;
+  const queryClient = useQueryClient();
+
+  const cachedStore = queryClient.getQueryData(['#todoList']);
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
@@ -126,6 +134,33 @@ export default function TodoTable() {
       },
     },
   });
+  const handleCreateTask = async (data: Task) => {
+    const { _id, ...rest } = data;
+    const response = await CreateTodo(rest);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+  const handleUpdateTask = async (data: Task) => {
+    const { _id, ...rest } = data;
+    const response = await UpdateTodo(_id, rest);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+
+  const handleCompletedTask = async (id: string) => {
+    const response = await CompletedTodo(id);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
+  const handleDeleteTask = async (id: string) => {
+    const response = await DeleteTodo(id);
+    if (response.success) {
+      LoadAllTasks();
+    }
+  };
 
   const handleSubmit = (data: Task) => {
     if (task.title.length === 0) {
@@ -135,13 +170,35 @@ export default function TodoTable() {
     setOpen(false);
     task._id.length > 0 ? handleUpdateTask(data) : handleCreateTask(data);
   };
+  const LoadAllTasks = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+
+    GetAllTodo_WithoutPanigation(filterPage)
+      .then((response) => {
+        if (response.success) {
+          setTasks(response.data);
+          //setItemLocalStore('#todoList', response.data);
+          queryClient.setQueryData(['#todoList'], () => {
+            return response.data; // thêm mới
+          });
+        }
+      })
+      .catch((err) => console.log('err => ', err))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const isFirstLoad = useRef(true); // 👈 đánh dấu lần render đầu tiên
+
   useEffect(() => {
     if (!isFirstLoad.current) {
       LoadAllTasks();
     } else {
       const localstore = getItemLocalStore('#todoList');
-      localstore ? setTasks(localstore) : LoadAllTasks();
+      cachedStore ? setTasks(cachedStore as Task[]) : LoadAllTasks();
       return;
     }
     // Sau lần đầu tiên render
@@ -263,10 +320,6 @@ export default function TodoTable() {
             <DialogTitle>
               {task._id.length > 0 ? 'Update Task' : 'Add Task'}
             </DialogTitle>
-            {/* <DialogDescription>
-                            Make changes to your profile here. Click save when you&apos;re
-                            done.
-                        </DialogDescription> */}
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-3">

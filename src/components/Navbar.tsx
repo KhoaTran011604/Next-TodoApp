@@ -2,10 +2,13 @@
 import Link from 'next/link';
 import { useAuth } from '../context/auth';
 import ThemeToggleButton from './common/ThemeToggleButton';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 export const Navbar = () => {
   const auth = useAuth();
-  console.log(auth);
-
+  const router = useRouter();
+  const queryClient = useQueryClient();
   return (
     <nav className="bg-blue-400 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -52,14 +55,26 @@ export const Navbar = () => {
         >
           {auth.isAuthenticated && (
             <div className="flex gap-4 items-center">
+              <Link href="/todo">Demo Parallel routes</Link>
               <Link href="/table-tasks">Shadcn Table</Link>
               <Link href="/tanstack-table-tasks">TanStack Table</Link>
               <Link href="/all-tasks">All</Link>
               <Link href="/completed-tasks">Completed</Link>
 
               <h2
-                onClick={() => auth.logout()}
-              >{`${auth.user.fullName} > Đăng xuất`}</h2>
+                onClick={async () => {
+                  const res = auth.logout();
+                  if (res) {
+                    queryClient.removeQueries([
+                      '#todoList',
+                      '#todoList_Completed',
+                      '#user',
+                    ]); // key dạng mảng hoặc chuỗi
+                    Cookies.remove('token_info');
+                    router.push('/login-2');
+                  }
+                }}
+              >{`${auth.user.fullName} | Đăng xuất`}</h2>
             </div>
           )}
         </div>
